@@ -23,8 +23,12 @@ require __DIR__ . '/../src/dependencies.php';
 // Register middleware
 require __DIR__ . '/../src/middleware.php';
 
-// Register routes
-require __DIR__ . '/../src/routes.php';
+
+//require __DIR__ . '/../MhSaleemAlzayat/routes.php';
+//require __DIR__ . '/../IslamElbadawy/routes.php';
+require __DIR__ . '/../TarekSherif/routes.php';
+
+require __DIR__ . '/../MainAPI/Master.php';
 
 // Run app
 $app->run();
