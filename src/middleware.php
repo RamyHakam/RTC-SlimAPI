@@ -26,6 +26,9 @@ else{
 }}
 
 
+
+
+
 $app->add(new \Slim\Middleware\HttpBasicAuthentication([
     "path" => "/api/token",
      "realm" => "Protected",
@@ -57,7 +60,7 @@ $app->post("/api/token", function ($request, $response, $arguments) {
 
 $app->add(new \Slim\Middleware\JwtAuthentication([
 	 "path" => ["/"],
-    "passthrough" => ["/api/token"],
+    "passthrough" => ["/api/token","/islam/api/token"],
     "secret" => "supersecretkeyyoushouldnotcommittogithub",
     "error" => function ($request, $response, $arguments) {
         $data["status"] = "error";

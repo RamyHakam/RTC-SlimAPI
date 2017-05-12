@@ -1,14 +1,68 @@
 <?php
+
+use \Firebase\JWT\JWT;
+use \Slim\Middleware\HttpBasicAuthentication\AuthenticatorInterface;
+
+$app = new \slim\App;
+
+
+class islamAuthenticator implements AuthenticatorInterface{
+	public function __invoke(array $arguments){
+		$user = $arguments['user'];
+		$Password = $arguments['password'];
+		if(($user=="islam") &&($Password== "01157568599")){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+}
+
+
+$app->add(new \slim\Middleware\HttpBasicAuthentication([
+	"path" => "/islam/api/token",
+	"realm" => "protected",
+	"authenticator" => new islamAuthenticator()
+]));
+
+$app->post("/islam/api/token", function($req,$res,$args){
+	$now = new DateTime();
+	$future = new DateTime("now +2 minutes");
+	$server = $req->getServerParams();
+
+	$payload = [
+        "iat" => $now->getTimeStamp(),
+        "exp" => $future->getTimeStamp(),
+        "sub" => $server["PHP_AUTH_USER"],
+    ];
+    $secret = "supersecretkeyyoushouldnotcommittogithub";
+    $token = JWT::encode($payload, $secret, "HS512");
+    $data["status"] = "ok";
+    $data["token"] = $token;
+
+    return $res->withStatus(201)
+        ->withHeader("Content-Type", "application/json")
+        ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+});
+
+
+$app->add(new \Slim\Middleware\JwtAuthentication([
+	 "path" => ["/"],
+    "passthrough" => ["/islam/api/token"],
+    "secret" => "supersecretkeyyoushouldnotcommittogithub",
+    "error" => function ($request, $response, $arguments) {
+        $data["status"] = "error";
+        $data["message"] = $arguments["message"];
+        return $response
+            ->withHeader("Content-Type", "application/json")
+            ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    }
+]));
+
+
 // Routes
 
-
-
-
-
-
-//our first route
-
-//
 
 
 
