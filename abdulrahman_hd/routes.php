@@ -98,7 +98,7 @@
 	$app->get('/abdulrahman/forgetPassword/{Email}',function($req, $res, $args){
 		$Email = $args['Email'];
 		$message = array('Your Name is ' => 'islam','Your Password is ' => '01157568599');
-		if($Email == 'abdulrahman@gmailcom'){
+		if($Email == 'abdoalrahmanhd@gmailcom'){
 			return $res->withJson($message, 200);
 		}
 		else {
